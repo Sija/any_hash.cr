@@ -1,3 +1,3 @@
-module AnyHash
+class AnyHash
   VERSION = "0.1.0"
 end
