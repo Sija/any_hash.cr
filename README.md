@@ -1,4 +1,4 @@
-# any_hash.cr
+# any_hash.cr [![Build Status](https://travis-ci.org/Sija/any_hash.cr.svg?branch=master)](https://travis-ci.org/Sija/any_hash.cr)
 
 TODO: Write a description here
 
