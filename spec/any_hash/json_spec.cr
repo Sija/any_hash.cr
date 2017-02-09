@@ -51,6 +51,24 @@ describe AnyHash::JSON do
     end
   end
 
+  context ".deep_merge!" do
+    it "merges given Hash with another AnyHash::JSON, Hash or NamedTuple" do
+      hash = {} of AnyHash::JSONTypes::Key => AnyHash::JSONTypes::Value
+
+      AnyHash::JSON.deep_merge!(hash, *{
+        AnyHash::JSON.new({foo: {bar: true}}),
+        {:foo => {swing: 133.7}},
+        {foo: {jazz: "60s"}},
+        {foo: {roar: {} of Symbol => Symbol}},
+        {:foo => {roar: {"alfa" => "beta"}}},
+      }).should eq(hash)
+
+      hash.should eq({
+        :foo => {:bar => true, :swing => 133.7, :jazz => "60s", :roar => {"alfa" => "beta"}},
+      })
+    end
+  end
+
   context "#initialize" do
     it "raises TypeCastError when passed invalid type" do
       expect_raises TypeCastError, /cast from Slice\(UInt8\) to .*? failed/ do
