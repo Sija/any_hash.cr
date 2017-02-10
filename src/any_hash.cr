@@ -73,10 +73,10 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  protected def self.internal_deep_merge!(hash, *values, &block)
+  protected def self.internal_deep_merge!(hash, *values, **options, &block)
+    values += {options}
     values.each do |other_hash|
-      next unless other_hash
-      other_hash.each do |other_key, other_value|
+      other_hash.try &.each do |other_key, other_value|
         other_value = yield(other_key, other_value) || other_value
         other_value = deep_cast_value(other_value)
 
@@ -92,8 +92,8 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  def self.deep_merge!(hash, *values, &block)
-    internal_deep_merge!(hash, *values) do |other_key, other_value|
+  def self.deep_merge!(hash, *values, **options, &block)
+    internal_deep_merge!(hash, *values, **options) do |other_key, other_value|
       if hash.has_key?(other_key)
         yield other_key, hash[other_key], other_value
       end
@@ -101,8 +101,8 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  def self.deep_merge!(hash, *values)
-    internal_deep_merge!(hash, *values) { }
+  def self.deep_merge!(hash, *values, **options)
+    internal_deep_merge!(hash, *values, **options) { }
   end
 
   @__hash__ : Hash(K, V)
@@ -179,26 +179,26 @@ abstract class AnyHash(K, V)
   # and returns copy of `self`.
   #
   # See `Hash#merge`.
-  def merge(*values)
-    dup.merge!(*values)
+  def merge(*values, **options)
+    dup.merge!(*values, **options)
   end
 
   # ditto
-  def merge(*values, &block)
-    dup.merge!(*values) { |*args| yield *args }
+  def merge(*values, **options, &block)
+    dup.merge!(*values, **options) { |*args| yield *args }
   end
 
   # Performs deep merge of `self` with given other *values* and returns `self`.
   #
   # See `Hash#merge!`.
-  def merge!(*values)
-    self.class.deep_merge!(@__hash__, *values)
+  def merge!(*values, **options)
+    self.class.deep_merge!(@__hash__, *values, **options)
     self
   end
 
   # ditto
-  def merge!(*values, &block)
-    self.class.deep_merge!(@__hash__, *values) { |*args| yield *args }
+  def merge!(*values, **options, &block)
+    self.class.deep_merge!(@__hash__, *values, **options) { |*args| yield *args }
     self
   end
 
