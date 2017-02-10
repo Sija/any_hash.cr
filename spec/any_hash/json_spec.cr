@@ -87,6 +87,23 @@ describe AnyHash::JSON do
       AnyHash::JSON.new({:foo => {:bar => true}})
                    .to_h.should eq({:foo => {:bar => true}})
     end
+
+    it "takes another AnyHash::JSON or Hash by reference" do
+      samples = {
+        AnyHash::JSON.new({kung: :foo}),
+        {:kung => :foo} of AnyHash::JSON::Key => AnyHash::JSON::Value,
+      }
+
+      samples.each do |hash|
+        another = AnyHash::JSON.new(hash)
+        another.should eq(hash)
+
+        another.merge!({foo: :mare, bar: 10, drink: true})
+        another.should eq(hash)
+
+        {hash[:foo]?, another[:foo]?}.should eq({:mare, :mare})
+      end
+    end
   end
 
   context "#==" do

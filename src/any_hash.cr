@@ -141,10 +141,15 @@ abstract class AnyHash(K, V)
 
   chain_hash_methods %w(delete_if reject! select! compact! clear)
 
-  # Initializes `AnyHash` with the content of the given *hash*.
-  def initialize(hash : AnyHash | Hash | NamedTuple? = nil)
-    @__hash__ = {} of K => V
-    merge! hash
+  # Initializes `AnyHash` with the given *hash* object.
+  #
+  # NOTE: `AnyHash | Hash` objects are passed by reference.
+  def initialize(hash = nil)
+    if hash
+      @__hash__ = self.class.deep_cast_value(hash).as(Hash(K, V))
+    else
+      @__hash__ = {} of K => V
+    end
   end
 
   # See `Hash#[]=`.
