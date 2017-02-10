@@ -171,7 +171,7 @@ abstract class AnyHash(K, V)
   # if any intermediate step is `nil`.
   def dig(*keys)
     keys.reduce(@__hash__) do |memo, key|
-      memo.as(Hash)[key]
+      memo.as(Hash(K, V))[key]
     end
   end
 

@@ -129,7 +129,7 @@ describe AnyHash::JSON do
       hash.dig?(:foo, :swing).should be_nil
       hash.dig?(:bar, :foo).should be_nil
     end
-    it "returns nil if intermediate value is not a Hash(K, V)" do
+    it "returns nil if intermediate value is not a Hash" do
       hash.dig?(:foo, :jazz, :blues).should be_nil
       hash.dig?(:oof, :foo).should be_nil
     end
@@ -154,11 +154,11 @@ describe AnyHash::JSON do
         hash.dig(:bar, :foo)
       end
     end
-    it "raises if intermediate value is not a Hash(K, V)" do
-      expect_raises TypeCastError, "cast from String to Hash(K, V) failed" do
+    it "raises if intermediate value is not a Hash" do
+      expect_raises TypeCastError, /cast from String to Hash\(.*?\) failed/ do
         hash.dig(:foo, :jazz, :blues)
       end
-      expect_raises TypeCastError, "cast from Bool to Hash(K, V) failed" do
+      expect_raises TypeCastError, /cast from Bool to Hash\(.*?\) failed/ do
         hash.dig(:oof, :foo)
       end
     end
