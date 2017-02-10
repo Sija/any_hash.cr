@@ -15,12 +15,15 @@ abstract class AnyHash(K, V)
   # with given *key* keys and recursive *value* types.
   #
   # ```
-  # AnyHash.define_new klass: StringHash,
+  # AnyHash.define_new klass: :StringHash,
   #   key: String,
-  #   value: String
+  #   value: String | Symbol
   #
-  # StringHash.new({"foo" => {"bar", "baz"}})
-  # # => #<StringHash:0x100d5e180 @__hash__={"a" => ["foo", "bar"]}>
+  # StringHash::Key   # => String
+  # StringHash::Value # => String | Symbol
+  #
+  # StringHash.new({"foo" => {:bar, "baz"}})
+  # # => #<StringHash:0x100d5e180 @__hash__={"foo" => [:bar, "baz"]}>
   # ```
   #
   # See `AnyHash`.
@@ -32,7 +35,7 @@ abstract class AnyHash(K, V)
       alias Key = {{key.id}}
       alias ValueType = {{value.id}}
       alias Value = ValueType | Array(Value) | Set(Value) | Hash(Key, Value)
-      alias Instance = AnyHash(Key, Value)
+      alias Instance = ::AnyHash(Key, Value)
     end
 
     # Wrapper for `Hash(K, V)` with `{{key.id}}` keys and
@@ -74,11 +77,10 @@ abstract class AnyHash(K, V)
     values.each do |other_hash|
       next unless other_hash
       other_hash.each do |other_key, other_value|
-        original_value = hash[other_key]?
-        if yield_value = yield other_key, other_value
-          other_value = yield_value
-        end
+        other_value = yield(other_key, other_value) || other_value
         other_value = deep_cast_value(other_value)
+
+        original_value = hash[other_key]?
         if original_value.is_a?(Hash) && other_value.is_a?(Hash)
           deep_merge!(original_value, other_value)
         else

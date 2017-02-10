@@ -96,11 +96,11 @@ describe AnyHash::JSON do
     }
 
     it "compares keys and values of AnyHash::JSON, Hash or NamedTuple" do
-      samples[:eq].in_groups_of(2, samples[:eq].last).each do |(hash1, hash2)|
-        (hash1 == hash2).should be_true
+      samples[:eq].in_groups_of(2, samples[:eq].last).each do |(hash, another)|
+        (hash == another).should be_true
       end
-      samples[:neq].in_groups_of(2, samples[:neq].first).each do |(hash1, hash2)|
-        (hash1 != hash2).should be_true
+      samples[:neq].in_groups_of(2, samples[:neq].first).each do |(hash, another)|
+        (hash == another).should be_false
       end
     end
   end

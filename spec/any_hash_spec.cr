@@ -7,11 +7,8 @@ describe AnyHash do
         AnyHash(Symbol, Bool).deep_cast_value 1337.as(Int32 | Bool)
       end
     end
-
     it "accepts valid type" do
       AnyHash(Symbol, Symbol).deep_cast_value(:foo).should eq(:foo)
     end
   end
 end
-
-require "./any_hash/*"
