@@ -104,4 +104,54 @@ describe AnyHash::JSON do
       end
     end
   end
+
+  context "#dig?" do
+    hash = AnyHash::JSON.new({foo: {jazz: "60s"}, oof: true, zilch: nil})
+
+    it "returns nil if intermediate value is missing" do
+      hash.dig?(:foo, :swing).should be_nil
+      hash.dig?(:bar, :foo).should be_nil
+    end
+    it "returns nil if intermediate value is not a Hash(K, V)" do
+      hash.dig?(:foo, :jazz, :blues).should be_nil
+      hash.dig?(:oof, :foo).should be_nil
+    end
+
+    it "extracts the nested value" do
+      hash.dig?(:foo).should eq({:jazz => "60s"})
+      hash.dig?(:foo, :jazz).should eq("60s")
+    end
+    it "extracts the nested nil value" do
+      hash.dig?(:zilch).should be_nil
+    end
+  end
+
+  context "#dig" do
+    hash = AnyHash::JSON.new({foo: {jazz: "60s"}, oof: true, zilch: nil})
+
+    it "raises if intermediate value is missing" do
+      expect_raises KeyError, "Missing hash key: :swing" do
+        hash.dig(:foo, :swing)
+      end
+      expect_raises KeyError, "Missing hash key: :bar" do
+        hash.dig(:bar, :foo)
+      end
+    end
+    it "raises if intermediate value is not a Hash(K, V)" do
+      expect_raises TypeCastError, "cast from String to Hash(K, V) failed" do
+        hash.dig(:foo, :jazz, :blues)
+      end
+      expect_raises TypeCastError, "cast from Bool to Hash(K, V) failed" do
+        hash.dig(:oof, :foo)
+      end
+    end
+
+    it "extracts the nested value" do
+      hash.dig(:foo).should eq({:jazz => "60s"})
+      hash.dig(:foo, :jazz).should eq("60s")
+    end
+    it "extracts the nested nil value" do
+      hash.dig(:zilch).should be_nil
+    end
+  end
 end

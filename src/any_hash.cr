@@ -147,6 +147,24 @@ abstract class AnyHash(K, V)
     @__hash__[key] = self.class.deep_cast_value(value)
   end
 
+  # Extracts the nested value specified by the sequence of *keys* objects
+  # by calling `#[]?` at each step, returns `nil`
+  # if any intermediate step is `nil`.
+  def dig?(*keys)
+    keys.reduce(@__hash__) do |memo, key|
+      memo.as?(Hash(K, V)).try(&.[]?(key)) || break
+    end
+  end
+
+  # Extracts the nested value specified by the sequence of *keys* objects
+  # by calling `#[]` at each step, raises
+  # if any intermediate step is `nil`.
+  def dig(*keys)
+    keys.reduce(@__hash__) do |memo, key|
+      memo.as(Hash)[key]
+    end
+  end
+
   # Performs deep merge of `self` with given other *values*
   # and returns copy of `self`.
   #
