@@ -50,7 +50,7 @@ abstract class AnyHash(K, V)
   end
 
   # Deep casts *value* to the `V` type.
-  def self.deep_cast_value(value) # : V
+  def self.deep_cast_value(value)
     # FIXME: ouch, `NamedTuple#to_h` internally uses `#clone`
     # which `Time` doesn't support...
     case value
@@ -73,7 +73,7 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  protected def self.internal_deep_merge!(hash : Hash, *values : AnyHash | Hash | NamedTuple?, &block)
+  protected def self.internal_deep_merge!(hash, *values, &block)
     values.each do |other_hash|
       next unless other_hash
       other_hash.each do |other_key, other_value|
@@ -92,7 +92,7 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  def self.deep_merge!(hash : Hash, *values : AnyHash | Hash | NamedTuple?, &block)
+  def self.deep_merge!(hash, *values, &block)
     internal_deep_merge!(hash, *values) do |other_key, other_value|
       if hash.has_key?(other_key)
         yield other_key, hash[other_key], other_value
@@ -101,7 +101,7 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  def self.deep_merge!(hash : Hash, *values : AnyHash | Hash | NamedTuple?)
+  def self.deep_merge!(hash, *values)
     internal_deep_merge!(hash, *values) { }
   end
 
@@ -148,7 +148,7 @@ abstract class AnyHash(K, V)
   end
 
   # See `Hash#[]=`.
-  def []=(key : K, value)
+  def []=(key, value)
     @__hash__[key] = self.class.deep_cast_value(value)
   end
 
@@ -174,32 +174,32 @@ abstract class AnyHash(K, V)
   # and returns copy of `self`.
   #
   # See `Hash#merge`.
-  def merge(*values : AnyHash | Hash | NamedTuple?)
+  def merge(*values)
     dup.merge!(*values)
   end
 
   # ditto
-  def merge(*values : AnyHash | Hash | NamedTuple?, &block)
+  def merge(*values, &block)
     dup.merge!(*values) { |*args| yield *args }
   end
 
   # Performs deep merge of `self` with given other *values* and returns `self`.
   #
   # See `Hash#merge!`.
-  def merge!(*values : AnyHash | Hash | NamedTuple?)
+  def merge!(*values)
     self.class.deep_merge!(@__hash__, *values)
     self
   end
 
   # ditto
-  def merge!(*values : AnyHash | Hash | NamedTuple?, &block)
+  def merge!(*values, &block)
     self.class.deep_merge!(@__hash__, *values) { |*args| yield *args }
     self
   end
 
   # Clears and merges `self` with given *other*.
   # Returns `self`.
-  def replace(other : AnyHash | Hash | NamedTuple?)
+  def replace(other)
     clear
     merge! other
   end
