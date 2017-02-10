@@ -53,7 +53,7 @@ describe AnyHash::JSON do
 
   context ".deep_merge!" do
     it "merges given Hash with another AnyHash::JSON, Hash or NamedTuple" do
-      hash = {} of AnyHash::JSONTypes::Key => AnyHash::JSONTypes::Value
+      hash = {} of AnyHash::JSON::Key => AnyHash::JSON::Value
 
       AnyHash::JSON.deep_merge!(hash, *{
         AnyHash::JSON.new({foo: {bar: true}}),
