@@ -148,6 +148,34 @@ describe AnyHash::JSON do
     end
   end
 
+  context "#[]?" do
+    hash = AnyHash::JSON.new({foo: {jazz: "60s"}, oof: true, zilch: nil})
+
+    it "returns nil if value is missing" do
+      hash[:foo, :swing]?.should be_nil
+      hash[:bar, :foo]?.should be_nil
+    end
+    it "extracts the nested value" do
+      hash[:foo]?.should eq({:jazz => "60s"})
+      hash[:foo, :jazz]?.should eq("60s")
+    end
+  end
+
+  context "#[]" do
+    hash = AnyHash::JSON.new({foo: {jazz: "60s"}, oof: true, zilch: nil})
+
+    it "raises if value is missing" do
+      expect_raises { hash.dig(:foo, :swing) }
+      expect_raises { hash.dig(:bar, :foo) }
+      expect_raises { hash.dig(:foo, :jazz, :blues) }
+      expect_raises { hash.dig(:oof, :foo) }
+    end
+    it "extracts the nested value" do
+      hash[:foo].should eq({:jazz => "60s"})
+      hash[:foo, :jazz].should eq("60s")
+    end
+  end
+
   context "#dig?" do
     hash = AnyHash::JSON.new({foo: {jazz: "60s"}, oof: true, zilch: nil})
 

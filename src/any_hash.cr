@@ -170,6 +170,16 @@ abstract class AnyHash(K, V)
     @__hash__[key] = self.class.deep_cast_value(value)
   end
 
+  # See `#dig?`.
+  def []?(*keys)
+    dig? *keys
+  end
+
+  # See `#dig`.
+  def [](*keys)
+    dig *keys
+  end
+
   # Extracts the nested value specified by the sequence of *keys* objects
   # by calling `#[]?` at each step, returns `nil`
   # if any intermediate step is `nil`.
