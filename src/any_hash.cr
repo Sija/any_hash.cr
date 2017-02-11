@@ -166,6 +166,16 @@ abstract class AnyHash(K, V)
   end
 
   # See `Hash#[]=`.
+  def []=(*args)
+    args = args.to_a
+    # Split *args* into the *path* to nested hash where, under the *key*
+    # lies the *value* we overwrite.
+    path, key, value = args[0...-2], args[args.size - 2], args[args.size - 1]
+    # dig 'em hash
+    dig(path).as(Hash(K, V))[key.as(K)] = self.class.deep_cast_value(value)
+  end
+
+  # See `Hash#[]=`.
   def []=(key, value)
     @__hash__[key] = self.class.deep_cast_value(value)
   end
