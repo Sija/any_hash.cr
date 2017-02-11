@@ -172,30 +172,40 @@ abstract class AnyHash(K, V)
 
   # See `#dig?`.
   def []?(*keys)
-    dig? *keys
+    dig? keys
   end
 
   # See `#dig`.
   def [](*keys)
-    dig *keys
+    dig keys
   end
 
   # Extracts the nested value specified by the sequence of *keys* objects
   # by calling `#[]?` at each step, returns `nil`
   # if any intermediate step is `nil`.
-  def dig?(*keys)
+  def dig?(keys : Enumerable)
     keys.reduce(@__hash__) do |memo, key|
       memo.as?(Hash(K, V)).try(&.[]?(key)) || break
     end
   end
 
+  # ditto
+  def dig?(*keys)
+    dig?(keys)
+  end
+
   # Extracts the nested value specified by the sequence of *keys* objects
   # by calling `#[]` at each step, raises
   # if any intermediate step is `nil`.
-  def dig(*keys)
+  def dig(keys : Enumerable)
     keys.reduce(@__hash__) do |memo, key|
       memo.as(Hash(K, V))[key]
     end
+  end
+
+  # ditto
+  def dig(*keys)
+    dig(keys)
   end
 
   # Performs deep merge of `self` with given other *values*
