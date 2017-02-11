@@ -106,6 +106,32 @@ describe AnyHash::JSON do
     end
   end
 
+  context "#dup" do
+    it "returns shallow copy of the self" do
+      hash = AnyHash::JSON.new({foo: {bar: true}})
+      other = hash.dup.merge! jazz: {swing: true}
+
+      other.dig?(:jazz, :swing).should eq(true)
+      hash.dig?(:jazz, :swing).should be_nil
+
+      # other.merge! foo: {bar: :baz}
+      # hash.dig?(:foo, :bar).should eq(:baz)
+    end
+  end
+
+  context "#clone" do
+    it "returns deep copy of the self" do
+      hash = AnyHash::JSON.new({foo: {bar: {baz: {bat: {eat_fruits: true}}}}})
+      other = hash.clone.merge! jazz: {swing: true}
+
+      other.dig?(:jazz, :swing).should eq(true)
+      hash.dig?(:jazz, :swing).should be_nil
+
+      other.merge! foo: {bar: {baz: {bat: {eat_fruits: false}}}}
+      hash.dig?(:foo, :bar, :baz, :bat, :eat_fruits).should eq(true)
+    end
+  end
+
   context "#==" do
     samples = {
       eq:  {AnyHash::JSON.new({foo: 1337}), {foo: 1337_i64}, {:foo => 1337}},

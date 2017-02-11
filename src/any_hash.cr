@@ -152,6 +152,20 @@ abstract class AnyHash(K, V)
     end
   end
 
+  # Returns a new `AnyHash`, with a shallow copy of the underlying `Hash`.
+  #
+  # Use `#clone` if you want a deep copy.
+  def dup
+    self.class.new @__hash__.dup
+  end
+
+  # Returns a new `AnyHash`, with a deep copy of the underlying `Hash`.
+  #
+  # Use `#dup` if you want a shallow copy.
+  def clone
+    self.class.new.merge! @__hash__
+  end
+
   # See `Hash#[]=`.
   def []=(key, value)
     @__hash__[key] = self.class.deep_cast_value(value)
