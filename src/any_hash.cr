@@ -82,10 +82,9 @@ abstract class AnyHash(K, V)
 
         original_value = hash[other_key]?
         if original_value.is_a?(Hash) && other_value.is_a?(Hash)
-          deep_merge!(original_value, other_value)
-        else
-          hash[other_key] = other_value
+          other_value = deep_merge!(original_value.dup, other_value)
         end
+        hash[other_key] = other_value
       end
     end
     hash
