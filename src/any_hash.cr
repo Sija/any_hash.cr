@@ -133,7 +133,7 @@ abstract class AnyHash(K, V)
 
       # NOTE: Wrapper for block version of `Hash#{{method.id}}` returning `self`.
       def {{method.id}}(*args, **kwargs, &block)
-        @__hash__.{{method.id}}(*args, **kwargs) { |*blargs| yield *blargs }
+        @__hash__.{{method.id}}(*args, **kwargs) { |*blargs| yield blargs }
         self
       end
     {% end %}

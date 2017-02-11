@@ -18,6 +18,19 @@ describe AnyHash do
     end
   end
 
+  context ".chain_hash_methods" do
+    it "defines new method delegator returning self" do
+      {% for method in %i(compact! clear) %}
+        TestHash.new.{{method.id}}.should be_a TestHash
+      {% end %}
+    end
+    it "defines new method delegator returning self (with block)" do
+      {% for method in %i(delete_if reject! select!) %}
+        TestHash.new.{{method.id}} { true }.should be_a TestHash
+      {% end %}
+    end
+  end
+
   context ".deep_cast_value" do
     it "raises TypeCastError when passed invalid type" do
       expect_raises TypeCastError, "cast from Int32 to Bool failed" do
