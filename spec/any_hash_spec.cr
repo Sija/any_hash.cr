@@ -1,6 +1,23 @@
 require "./spec_helper"
 
+AnyHash.define_new klass: :TestHash,
+  key: Symbol | String,
+  value: Number::Primitive
+
 describe AnyHash do
+  context ".define_new" do
+    it "defines new klass using provided name and K, V types" do
+      TestHash.should be_a TestHash.class
+    end
+    it "returns klass with Key and Value constants" do
+      TestHash::Key.should be_a (Symbol | String).class
+      TestHash::Value.should be_truthy
+    end
+    it "defines new klass which inherits from AnyHash" do
+      TestHash.should be_a AnyHash(TestHash::Key, TestHash::Value).class
+    end
+  end
+
   context ".deep_cast_value" do
     it "raises TypeCastError when passed invalid type" do
       expect_raises TypeCastError, "cast from Int32 to Bool failed" do
