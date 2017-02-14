@@ -252,6 +252,32 @@ describe AnyHash::JSON do
     end
   end
 
+  context "#merge!" do
+    it "destructively merges with contents of the given hash" do
+      hash = AnyHash::JSON.new({foo: true})
+      hash.merge!(foo: false, bar: true).should eq({foo: false, bar: true})
+      hash.should eq({foo: false, bar: true})
+    end
+    it "destructively merges with contents of the given nested hash" do
+      hash = AnyHash::JSON.new({foo: {bar: true}})
+      hash.merge!({foo: {bar: :baz}}).should eq({foo: {bar: :baz}})
+      hash.should eq({foo: {bar: :baz}})
+    end
+  end
+
+  context "#merge" do
+    it "non-destructively merges with contents of the given hash" do
+      hash = AnyHash::JSON.new({foo: true})
+      hash.merge(foo: false, bar: true).should eq({foo: false, bar: true})
+      hash.should eq({foo: true})
+    end
+    it "non-destructively merges with contents of the given nested hash" do
+      hash = AnyHash::JSON.new({foo: {bar: true}})
+      hash.merge({foo: {bar: :baz}}).should eq({foo: {bar: :baz}})
+      hash.should eq({foo: {bar: true}})
+    end
+  end
+
   context "#reverse_merge!" do
     it "destructively merges with contents of the given hash" do
       hash = AnyHash::JSON.new({foo: true})
