@@ -176,6 +176,19 @@ describe AnyHash::JSON do
     end
   end
 
+  context "#[]=(key, value)" do
+    it "writes under the given key" do
+      hash = AnyHash::JSON.new({foo: {jazz: "60s"}})
+      (hash[:bar] = :foo).should eq(:foo)
+      hash.should eq({foo: {jazz: "60s"}, bar: :foo})
+    end
+    it "overwrites the given key" do
+      hash = AnyHash::JSON.new({foo: {jazz: "60s"}})
+      (hash[:foo] = :bar).should eq(:bar)
+      hash.should eq({foo: :bar})
+    end
+  end
+
   context "#[]=(*args)" do
     it "writes under the given nested key" do
       hash = AnyHash::JSON.new({foo: {jazz: "60s"}})
