@@ -245,6 +245,42 @@ abstract class AnyHash(K, V)
     self
   end
 
+  # Merges the caller into *other*. For example,
+  #
+  # ```
+  # options = options.reverse_merge(size: 25, velocity: 10)
+  # ```
+  #
+  # is equivalent to
+  #
+  # ```
+  # options = { size: 25, velocity: 10 }.merge(options)
+  # ```
+  #
+  # This is particularly useful for initializing an options hash with default values.
+  def reverse_merge(other = nil, *values, **options)
+    dup.reverse_merge!(other, *values, **options)
+  end
+
+  # ditto
+  def reverse_merge(other = nil, *values, **options, &block)
+    dup.reverse_merge!(other, *values, **options) { |*args| yield *args }
+  end
+
+  # Destructive version of `#reverse_merge`.
+  def reverse_merge!(other = nil, *values, **options)
+    values = {self, other} + values + {options}
+    hash = self.class.new.merge!(*values.reverse)
+    replace(hash)
+  end
+
+  # ditto
+  def reverse_merge!(other = nil, *values, **options, &block)
+    values = {self, other} + values + {options}
+    hash = self.class.new.merge!(*values.reverse) { |*args| yield *args }
+    replace(hash)
+  end
+
   # Replaces underlying `Hash` with given *other*.
   #
   # Returns `self`.
