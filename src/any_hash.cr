@@ -245,11 +245,18 @@ abstract class AnyHash(K, V)
     self
   end
 
-  # Clears and merges `self` with given *other*.
+  # Replaces underlying `Hash` with given *other*.
+  #
   # Returns `self`.
   def replace(other)
-    clear
-    merge! other
+    case other
+    when AnyHash(K, V) then @__hash__ = other.to_h
+    when Hash(K, V)    then @__hash__ = other
+    else
+      clear
+      merge!(other)
+    end
+    self
   end
 end
 

@@ -238,4 +238,20 @@ describe AnyHash::JSON do
       hash.dig(:zilch).should be_nil
     end
   end
+
+  context "#replace" do
+    samples = {
+      AnyHash::JSON.new({bar: {swing: "40s"}}),
+      {:good => {:hash => {:with => :pollen}}},
+      {takes: :tuple_too},
+    }
+
+    it "replaces contents of underlying Hash with given AnyHash::JSON, Hash or NamedTuple" do
+      hash = AnyHash::JSON.new({foo: {jazz: "60s"}})
+      samples.each do |other|
+        hash.replace(other).should eq(other)
+        hash.should eq(other)
+      end
+    end
+  end
 end
