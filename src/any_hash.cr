@@ -11,6 +11,9 @@
 # - `Hash` → `Hash(K, V)`
 # - `AnyHash` → `Hash(K, V)`
 abstract class AnyHash(K, V)
+  include Enumerable({K, V})
+  include Iterable({K, V})
+
   # Defines new klass *klass* inheriting from `AnyHash`
   # with given *key* keys and recursive *value* types.
   #
@@ -108,7 +111,7 @@ abstract class AnyHash(K, V)
   forward_missing_to @__hash__
 
   # See `Hash#==`.
-  delegate :==, :===, to: @__hash__
+  delegate :==, :===, :to_h, to: @__hash__
 
   # ditto
   def_equals @__hash__
@@ -117,9 +120,6 @@ abstract class AnyHash(K, V)
   def ==(other : NamedTuple)
     self == self.class.deep_cast_value(other)
   end
-
-  # include Enumerable({K, V})
-  # include Iterable({K, V})
 
   # :nodoc:
   private macro chain_hash_methods(method_names)
