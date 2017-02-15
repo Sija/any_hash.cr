@@ -41,4 +41,16 @@ describe AnyHash do
       AnyHash(Symbol, Symbol).deep_cast_value(:foo).should eq(:foo)
     end
   end
+
+  context "#is_a? Enumerable" do
+    assert do
+      TestHash.new.should be_a Enumerable({TestHash::Key, TestHash::Value})
+    end
+  end
+
+  context "#is_a? Iterable" do
+    assert do
+      TestHash.new.should be_a Iterable({TestHash::Key, TestHash::Value})
+    end
+  end
 end
