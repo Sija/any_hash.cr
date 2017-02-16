@@ -5,7 +5,7 @@ class Object
       property {{attr_name.id}} : AnyHash::JSON { AnyHash::JSON.new }
 
       def {{attr_name.id}}=(hash : Hash | NamedTuple?)
-        {{attr_name.id}}.replace hash
+        {{attr_name.id}}.replace(hash)
       end
     {% end %}
   end
