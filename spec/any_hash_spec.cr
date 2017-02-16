@@ -18,7 +18,7 @@ describe AnyHash do
     end
   end
 
-  context ".chain_hash_methods" do
+  context ".method_missing" do
     it "defines new method delegator returning self" do
       {% for method in %i(compact! clear) %}
         TestHash.new.{{method.id}}.should be_a TestHash

@@ -108,7 +108,18 @@ abstract class AnyHash(K, V)
   end
 
   @__hash__ : Hash(K, V)
-  forward_missing_to @__hash__
+
+  # List of methods delegated to the underlying `Hash` returning `self`.
+  CHAINED_HASH_METHODS = %w(delete_if reject! select! compact! clear)
+
+  macro method_missing(call)
+    {% if CHAINED_HASH_METHODS.includes?(call.name.stringify) %}
+      @__hash__.{{call}}
+      self
+    {% else %}
+      @__hash__.{{call}}
+    {% end %}
+  end
 
   # See `Hash#to_h`.
   delegate :to_h, to: @__hash__
@@ -123,25 +134,6 @@ abstract class AnyHash(K, V)
   def ==(other : NamedTuple)
     self == self.class.deep_cast_value(other)
   end
-
-  # :nodoc:
-  private macro chain_hash_methods(method_names)
-    {% for method in method_names %}
-      # NOTE: Wrapper for `Hash#{{method.id}}` returning `self`.
-      def {{method.id}}(*args, **kwargs)
-        @__hash__.{{method.id}}(*args, **kwargs)
-        self
-      end
-
-      # NOTE: Wrapper for block version of `Hash#{{method.id}}` returning `self`.
-      def {{method.id}}(*args, **kwargs, &block)
-        @__hash__.{{method.id}}(*args, **kwargs) { |*blargs| yield blargs }
-        self
-      end
-    {% end %}
-  end
-
-  chain_hash_methods %w(delete_if reject! select! compact! clear)
 
   # Initializes `AnyHash` with the given *hash* object.
   #
