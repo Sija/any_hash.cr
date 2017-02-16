@@ -117,7 +117,7 @@ abstract class AnyHash(K, V)
       @__hash__.{{call}}
       self
     {% else %}
-      @__hash__.{{call}}
+      to_self_if_hash(@__hash__.{{call}})
     {% end %}
   end
 
@@ -157,6 +157,15 @@ abstract class AnyHash(K, V)
     self.class.new.merge! @__hash__
   end
 
+  # Should nested `Hash` objects be wrapped in `AnyHash`?
+  #
+  # See `#[]`, `#dig`.
+  class_property? wrap_hash = true
+
+  # ditto
+  # TODO default value from @@wrap_hash
+  property? wrap_hash = true
+
   # See `Hash#[]=`.
   def []=(*args)
     args = args.to_a
@@ -164,7 +173,12 @@ abstract class AnyHash(K, V)
     # lies the *value* we overwrite.
     path, key, value = args[0...-2], args[args.size - 2], args[args.size - 1]
     # dig 'em hash
-    dig(path).as(Hash(K, V))[key.as(K)] = self.class.deep_cast_value(value)
+    nested_hash = dig(path)
+    if wrap_hash?
+      nested_hash.as(self)[key.as(K)] = value
+    else
+      nested_hash.as(Hash(K, V))[key.as(K)] = self.class.deep_cast_value(value)
+    end
   end
 
   # See `Hash#[]=`.
@@ -182,13 +196,19 @@ abstract class AnyHash(K, V)
     dig keys
   end
 
+  # :nodoc:
+  protected def to_self_if_hash(value)
+    value = self.class.new(value) if value.is_a?(Hash) && wrap_hash?
+    value
+  end
+
   # Extracts the nested value specified by the sequence of *keys* objects
   # by calling `#[]?` at each step, returns `nil`
   # if any intermediate step is `nil`.
   def dig?(keys : Enumerable)
-    keys.reduce(@__hash__) do |memo, key|
+    to_self_if_hash(keys.reduce(@__hash__) do |memo, key|
       memo.as?(Hash(K, V)).try(&.[]?(key)) || break
-    end
+    end)
   end
 
   # ditto
@@ -200,9 +220,9 @@ abstract class AnyHash(K, V)
   # by calling `#[]` at each step, raises
   # if any intermediate step is `nil`.
   def dig(keys : Enumerable)
-    keys.reduce(@__hash__) do |memo, key|
+    to_self_if_hash(keys.reduce(@__hash__) do |memo, key|
       memo.as(Hash(K, V))[key]
-    end
+    end)
   end
 
   # ditto
