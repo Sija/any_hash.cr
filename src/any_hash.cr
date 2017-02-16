@@ -223,9 +223,7 @@ abstract class AnyHash(K, V)
     dup.merge!(*values, **options) { |*args| yield *args }
   end
 
-  # Performs deep merge of `self` with given other *values* and returns `self`.
-  #
-  # See `Hash#merge!`.
+  # Destructive version of `#merge`.
   def merge!(*values, **options)
     self.class.deep_merge!(@__hash__, *values, **options)
     self
