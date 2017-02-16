@@ -211,6 +211,7 @@ describe AnyHash::JSON do
     end
     it "returns nil if intermediate value is not a Hash" do
       hash.dig?(:foo, :jazz, :blues).should be_nil
+      hash.dig?(:foo, :jazz, 0).should be_nil
       hash.dig?(:oof, :foo).should be_nil
     end
 
