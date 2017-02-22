@@ -43,13 +43,13 @@ describe AnyHash do
   end
 
   context "#is_a? Enumerable" do
-    assert do
+    it do
       TestHash.new.should be_a Enumerable({TestHash::Key, TestHash::Value})
     end
   end
 
   context "#is_a? Iterable" do
-    assert do
+    it do
       TestHash.new.should be_a Iterable({TestHash::Key, TestHash::Value})
     end
   end
