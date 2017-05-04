@@ -54,15 +54,13 @@ abstract class AnyHash(K, V)
 
   # Deep casts *value* to the `V` type.
   def self.deep_cast_value(value)
-    # FIXME: ouch, `NamedTuple#to_h` internally uses `#clone`
-    # which `Time` doesn't support...
     case value
     when Array(V)      then value
     when Array         then value.map { |v| deep_cast_value(v).as(V) }
     when Set(V)        then value
     when Set           then value.map { |v| deep_cast_value(v).as(V) }.to_set
     when Tuple         then deep_cast_value(value.to_a)
-    when NamedTuple    then deep_cast_value(value.to_a.to_h)
+    when NamedTuple    then deep_cast_value(value.to_h)
     when AnyHash(K, V) then value.to_h
     when AnyHash       then deep_cast_value(value.to_h)
     when Hash(K, V)    then value
