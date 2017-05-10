@@ -1,9 +1,9 @@
 name: any_hash
-version: 0.1.0
+version: 0.2.0
 
 authors:
   - Sijawusz Pur Rahnama <sija@sija.pl>
 
-crystal: 0.20.5
+crystal: 0.22.0
 
 license: MIT
