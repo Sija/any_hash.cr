@@ -29,12 +29,12 @@ describe AnyHash::JSON do
 
     it "converts NamedTuple to a Hash" do
       AnyHash::JSON.deep_cast_value({foo: true, bar: 1337})
-                   .should eq({:foo => true, :bar => 1337})
+        .should eq({:foo => true, :bar => 1337})
     end
 
     it "converts NamedTuple to a Hash (recursive)" do
       AnyHash::JSON.deep_cast_value({foo: {jazz: true, swing: :always}, bar: 1337})
-                   .should eq({:foo => {:jazz => true, :swing => :always}, :bar => 1337})
+        .should eq({:foo => {:jazz => true, :swing => :always}, :bar => 1337})
     end
 
     it "accepts valid JSON type (recursive)" do
@@ -81,11 +81,11 @@ describe AnyHash::JSON do
 
     it "takes another AnyHash::JSON, Hash or NamedTuple as an initial value" do
       AnyHash::JSON.new(AnyHash::JSON.new({foo: {bar: true}}))
-                   .to_h.should eq({:foo => {:bar => true}})
+        .to_h.should eq({:foo => {:bar => true}})
       AnyHash::JSON.new({foo: {bar: true}})
-                   .to_h.should eq({:foo => {:bar => true}})
+        .to_h.should eq({:foo => {:bar => true}})
       AnyHash::JSON.new({:foo => {:bar => true}})
-                   .to_h.should eq({:foo => {:bar => true}})
+        .to_h.should eq({:foo => {:bar => true}})
     end
 
     it "takes another AnyHash::JSON or Hash by reference" do
@@ -165,10 +165,10 @@ describe AnyHash::JSON do
     hash = AnyHash::JSON.new({foo: {jazz: "60s"}, oof: true, zilch: nil})
 
     it "raises if value is missing" do
-      expect_raises { hash.dig(:foo, :swing) }
-      expect_raises { hash.dig(:bar, :foo) }
-      expect_raises { hash.dig(:foo, :jazz, :blues) }
-      expect_raises { hash.dig(:oof, :foo) }
+      expect_raises(Exception) { hash.dig(:foo, :swing) }
+      expect_raises(Exception) { hash.dig(:bar, :foo) }
+      expect_raises(Exception) { hash.dig(:foo, :jazz, :blues) }
+      expect_raises(Exception) { hash.dig(:oof, :foo) }
     end
     it "extracts the nested value" do
       hash[:foo].should eq({:jazz => "60s"})
