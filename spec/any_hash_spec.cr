@@ -7,7 +7,7 @@ AnyHash.define_new klass: :TestHash,
 describe AnyHash do
   context ".define_new" do
     it "defines new klass using provided name and K, V types" do
-      TestHash.should be_a TestHash.class
+      TestHash.new.should be_a TestHash
     end
     it "returns klass with Key and Value constants" do
       TestHash::Key.should be_a (Symbol | String).class
