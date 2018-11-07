@@ -37,7 +37,7 @@ describe Hash do
       any_json = hash.to_any_json
       any_json.should be_a(AnyHash::JSON)
       any_json.should eq(hash)
-      any_json.fetch(:foo).should eq(:bar)
+      any_json[:foo].should eq(:bar)
     end
   end
 end
@@ -49,7 +49,7 @@ describe NamedTuple do
       any_json = options.to_any_json
       any_json.should be_a(AnyHash::JSON)
       any_json.should eq(options)
-      any_json.fetch(:foo).should eq(:bar)
+      any_json[:foo].should eq(:bar)
     end
   end
 end
