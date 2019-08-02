@@ -126,6 +126,7 @@ abstract class AnyHash(K, V)
   # See `Hash#==`.
   delegate :==, :===, to: @__hash__
 
+  # See `Hash#each`.
   delegate :each, to: @__hash__
 
   # ditto
