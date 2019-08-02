@@ -53,6 +53,7 @@ abstract class AnyHash(K, V)
   end
 
   # Deep casts *value* to the `V` type.
+  #
   # ameba:disable Metrics/CyclomaticComplexity
   def self.deep_cast_value(value)
     case value
