@@ -53,6 +53,8 @@ abstract class AnyHash(K, V)
   end
 
   # Deep casts *value* to the `V` type.
+  #
+  # ameba:disable Metrics/CyclomaticComplexity
   def self.deep_cast_value(value)
     case value
     when Array(V)      then value
@@ -124,6 +126,9 @@ abstract class AnyHash(K, V)
 
   # See `Hash#==`.
   delegate :==, :===, to: @__hash__
+
+  # See `Hash#each`.
+  delegate :each, to: @__hash__
 
   # ditto
   def_equals @__hash__
