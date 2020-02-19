@@ -2,7 +2,7 @@ require "../spec_helper"
 
 describe AnyHash::JSON do
   context ".deep_cast_value" do
-    valid_values = {nil, 1, 2_i64, 13.37, true, :foo, "bar", Time.now}
+    valid_values = {nil, 1, 2_i64, 13.37, true, :foo, "bar", Time.utc}
 
     it "raises TypeCastError when passed invalid type" do
       expect_raises TypeCastError, /cast from Slice\(UInt8\) to .*? failed/ do
