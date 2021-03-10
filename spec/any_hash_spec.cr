@@ -25,7 +25,7 @@ describe AnyHash do
       {% end %}
     end
     it "defines new method delegator returning self (with block)" do
-      {% for method in %i(delete_if reject! select!) %}
+      {% for method in %i(reject! select!) %}
         TestHash.new.{{method.id}} { true }.should be_a TestHash
       {% end %}
     end
