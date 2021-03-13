@@ -1,3 +1,3 @@
 class AnyHash
-  VERSION = "0.2.4"
+  VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify }}
 end
