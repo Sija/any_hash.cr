@@ -1,4 +1,4 @@
-# any_hash.cr [![Build Status](https://travis-ci.org/Sija/any_hash.cr.svg?branch=master)](https://travis-ci.org/Sija/any_hash.cr)
+# any_hash.cr [![CI](https://github.com/Sija/any_hash.cr/actions/workflows/ci.yml/badge.svg)](https://github.com/Sija/any_hash.cr/actions/workflows/ci.yml)
 
 **AnyHash** is a library created to help with traversing and manipulation of
 nested `Hash` structures.
