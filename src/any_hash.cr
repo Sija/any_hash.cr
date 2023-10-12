@@ -76,7 +76,7 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  protected def self.internal_deep_merge!(hash, *values, **options, &block)
+  protected def self.internal_deep_merge!(hash, *values, **options, &)
     values += {options}
     values.each do |other_hash|
       other_hash.try &.each do |other_key, other_value|
@@ -94,7 +94,7 @@ abstract class AnyHash(K, V)
   end
 
   # :nodoc:
-  def self.deep_merge!(hash, *values, **options, &block)
+  def self.deep_merge!(hash, *values, **options, &)
     internal_deep_merge!(hash, *values, **options) do |other_key, other_value|
       if hash.has_key?(other_key)
         yield other_key, hash[other_key], other_value
@@ -225,7 +225,7 @@ abstract class AnyHash(K, V)
   end
 
   # ditto
-  def merge(*values, **options, &block)
+  def merge(*values, **options, &)
     dup.merge!(*values, **options) { |*args| yield *args }
   end
 
@@ -236,7 +236,7 @@ abstract class AnyHash(K, V)
   end
 
   # ditto
-  def merge!(*values, **options, &block)
+  def merge!(*values, **options, &)
     self.class.deep_merge!(@__hash__, *values, **options) { |*args| yield *args }
     self
   end
@@ -259,7 +259,7 @@ abstract class AnyHash(K, V)
   end
 
   # ditto
-  def reverse_merge(other = nil, *values, **options, &block)
+  def reverse_merge(other = nil, *values, **options, &)
     dup.reverse_merge!(other, *values, **options) { |*args| yield *args }
   end
 
@@ -271,7 +271,7 @@ abstract class AnyHash(K, V)
   end
 
   # ditto
-  def reverse_merge!(other = nil, *values, **options, &block)
+  def reverse_merge!(other = nil, *values, **options, &)
     values = {self, other} + values + {options}
     hash = self.class.new.merge!(*values.reverse) { |*args| yield *args }
     replace(hash)
