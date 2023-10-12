@@ -8,23 +8,23 @@ end
 describe Object do
   describe ".any_json_property" do
     {% for property in %i(tags user context) %}
-      it "defines lazily initialized instance getter {{property}} with type AnyHash::JSON" do
+      it "defines lazily initialized instance getter {{ property }} with type AnyHash::JSON" do
         obj = TestObject.new
-        obj.@{{property.id}}.should be_nil
-        obj.{{property.id}}.should be_a(AnyHash::JSON)
+        obj.@{{ property.id }}.should be_nil
+        obj.{{ property.id }}.should be_a(AnyHash::JSON)
       end
 
-      it "defines instance setter {{property}} (AnyHash::JSON)" do
+      it "defines instance setter {{ property }} (AnyHash::JSON)" do
         obj, any_hash = TestObject.new, AnyHash::JSON{:foo => :bar}
-        obj.{{property.id}} = any_hash
-        obj.{{property.id}}.should be(any_hash)
+        obj.{{ property.id }} = any_hash
+        obj.{{ property.id }}.should be(any_hash)
       end
 
-      it "defines instance setter {{property}} (Hash | NamedTuple)" do
+      it "defines instance setter {{ property }} (Hash | NamedTuple)" do
         obj = TestObject.new
-        obj.{{property.id}} = {:flags => {:red, :green, :blue}}
-        obj.{{property.id}} = {flags: {:red, :green, :blue}}
-        obj.{{property.id}}.should eq({flags: [:red, :green, :blue]})
+        obj.{{ property.id }} = {:flags => {:red, :green, :blue}}
+        obj.{{ property.id }} = {flags: {:red, :green, :blue}}
+        obj.{{ property.id }}.should eq({flags: [:red, :green, :blue]})
       end
     {% end %}
   end

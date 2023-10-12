@@ -2,10 +2,10 @@ class Object
   # TODO: moar!
   macro any_json_property(*attr_names)
     {% for attr_name in attr_names %}
-      property {{attr_name.id}} : AnyHash::JSON { AnyHash::JSON.new }
+      property {{ attr_name.id }} : AnyHash::JSON { AnyHash::JSON.new }
 
-      def {{attr_name.id}}=(hash : Hash | NamedTuple?)
-        {{attr_name.id}}.replace(hash)
+      def {{ attr_name.id }}=(hash : Hash | NamedTuple?)
+        {{ attr_name.id }}.replace(hash)
       end
     {% end %}
   end
