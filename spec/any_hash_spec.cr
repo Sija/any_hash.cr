@@ -14,7 +14,7 @@ describe AnyHash do
       TestHash::Value.should be_truthy
     end
     it "defines new klass which inherits from AnyHash" do
-      TestHash.should be_a AnyHash(TestHash::Key, TestHash::Value).class
+      TestHash.new.should be_a AnyHash(TestHash::Key, TestHash::Value)
     end
   end
 
