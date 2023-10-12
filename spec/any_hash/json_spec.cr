@@ -5,10 +5,10 @@ describe AnyHash::JSON do
     valid_values = {nil, 1, 2_i64, 13.37, true, :foo, "bar", Time.utc}
 
     it "raises TypeCastError when passed invalid type" do
-      expect_raises TypeCastError, /cast from Slice\(UInt8\) to .*? failed/ do
+      expect_raises TypeCastError, /Cast from Slice\(UInt8\) to .*? failed/ do
         AnyHash::JSON.deep_cast_value Bytes.empty.as(Bytes | Int64)
       end
-      expect_raises TypeCastError, /cast from Char to .*? failed/ do
+      expect_raises TypeCastError, /Cast from Char to .*? failed/ do
         AnyHash::JSON.deep_cast_value 'a'.as(Char | String)
       end
     end
@@ -71,10 +71,10 @@ describe AnyHash::JSON do
 
   context "#initialize" do
     it "raises TypeCastError when passed invalid type" do
-      expect_raises TypeCastError, /cast from Slice\(UInt8\) to .*? failed/ do
+      expect_raises TypeCastError, /Cast from Slice\(UInt8\) to .*? failed/ do
         AnyHash::JSON.new({invalid: Bytes.empty.as(Bytes | Int64)})
       end
-      expect_raises TypeCastError, /cast from Char to .*? failed/ do
+      expect_raises TypeCastError, /Cast from Char to .*? failed/ do
         AnyHash::JSON.new({why_oh_why_i_did_not_call_to_s: 'a'.as(Char | String)})
       end
     end
@@ -236,10 +236,10 @@ describe AnyHash::JSON do
       end
     end
     it "raises if intermediate value is not a Hash" do
-      expect_raises TypeCastError, /cast from String to Hash\(.*?\) failed/ do
+      expect_raises TypeCastError, /Cast from String to Hash\(.*?\) failed/ do
         hash.dig(:foo, :jazz, :blues)
       end
-      expect_raises TypeCastError, /cast from Bool to Hash\(.*?\) failed/ do
+      expect_raises TypeCastError, /Cast from Bool to Hash\(.*?\) failed/ do
         hash.dig(:oof, :foo)
       end
     end
