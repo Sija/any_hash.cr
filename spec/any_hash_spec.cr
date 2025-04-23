@@ -20,12 +20,12 @@ describe AnyHash do
 
   context ".method_missing" do
     it "defines new method delegator returning self" do
-      {% for method in %i(compact! clear) %}
+      {% for method in %i[compact! clear] %}
         TestHash.new.{{ method.id }}.should be_a TestHash
       {% end %}
     end
     it "defines new method delegator returning self (with block)" do
-      {% for method in %i(reject! select!) %}
+      {% for method in %i[reject! select!] %}
         TestHash.new.{{ method.id }} { true }.should be_a TestHash
       {% end %}
     end

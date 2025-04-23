@@ -110,7 +110,7 @@ abstract class AnyHash(K, V)
   @__hash__ : Hash(K, V)
 
   # List of methods delegated to the underlying `Hash` returning `self`.
-  CHAINED_HASH_METHODS = %w(reject! select! compact! clear)
+  CHAINED_HASH_METHODS = %w[reject! select! compact! clear]
 
   macro method_missing(call)
     {% if CHAINED_HASH_METHODS.includes?(call.name.stringify) %}

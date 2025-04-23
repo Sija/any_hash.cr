@@ -7,7 +7,7 @@ end
 
 describe Object do
   describe ".any_json_property" do
-    {% for property in %i(tags user context) %}
+    {% for property in %i[tags user context] %}
       it "defines lazily initialized instance getter {{ property }} with type AnyHash::JSON" do
         obj = TestObject.new
         obj.@{{ property.id }}.should be_nil

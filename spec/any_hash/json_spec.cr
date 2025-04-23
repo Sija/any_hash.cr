@@ -111,7 +111,7 @@ describe AnyHash::JSON do
       hash = AnyHash::JSON.new({foo: {bar: true}})
       other = hash.dup.merge! jazz: {swing: true}
 
-      other.dig?(:jazz, :swing).should eq(true)
+      other.dig?(:jazz, :swing).should be_true
       hash.dig?(:jazz, :swing).should be_nil
 
       # other.merge! foo: {bar: :baz}
@@ -124,11 +124,11 @@ describe AnyHash::JSON do
       hash = AnyHash::JSON.new({foo: {bar: {baz: {bat: {eat_fruits: true}}}}})
       other = hash.clone.merge! jazz: {swing: true}
 
-      other.dig?(:jazz, :swing).should eq(true)
+      other.dig?(:jazz, :swing).should be_true
       hash.dig?(:jazz, :swing).should be_nil
 
       other.merge! foo: {bar: {baz: {bat: {eat_fruits: false}}}}
-      hash.dig?(:foo, :bar, :baz, :bat, :eat_fruits).should eq(true)
+      hash.dig?(:foo, :bar, :baz, :bat, :eat_fruits).should be_true
     end
   end
 
