@@ -10,7 +10,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   any_hash:
-    github: sija/any_hash.cr
+    github: Sija/any_hash.cr
 ```
 
 ## Usage
@@ -109,12 +109,12 @@ crystal spec
 
 ## Contributing
 
-1. Fork it ( https://github.com/sija/any_hash.cr/fork )
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
+1. Fork it ( https://github.com/Sija/any_hash.cr/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
 ## Contributors
 
-- [sija](https://github.com/sija) Sijawusz Pur Rahnama - creator, maintainer
+- [Sija](https://github.com/Sija) Sijawusz Pur Rahnama - creator, maintainer
